@@ -15,7 +15,7 @@ public class AddCustomerTest extends BaseTest {
     @Test (priority = 1)
     public void AddCustomerWithOnlyRequiredField() throws InterruptedException {
 
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         basePage= loginPage.Login("admin@example.com","123456");
         addCustomerPage=basePage.CustomerPage();
 
@@ -43,7 +43,7 @@ public class AddCustomerTest extends BaseTest {
     }
     @Test(priority = 2)
     public void AddCustomerWithFullInfor() throws InterruptedException {
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         basePage= loginPage.Login("admin@example.com","123456");
         addCustomerPage=basePage.CustomerPage();
 
@@ -69,7 +69,7 @@ public class AddCustomerTest extends BaseTest {
 
     @Test(priority = 3)
     public void AddCustomerAndCreateContactWithOnlyRequiredField() throws InterruptedException {
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         basePage= loginPage.Login("admin@example.com","123456");
         addCustomerPage=basePage.CustomerPage();
 
@@ -95,7 +95,7 @@ public class AddCustomerTest extends BaseTest {
     }
     @Test(priority = 4)
     public void AddCustomerAndCreateContactWithFullInfo() throws InterruptedException {
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         basePage= loginPage.Login("admin@example.com","123456");
         addCustomerPage=basePage.CustomerPage();
 
@@ -121,7 +121,7 @@ public class AddCustomerTest extends BaseTest {
 
     @Test(priority = 5)
     public void ValidateRequireField(){
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         basePage= loginPage.Login("admin@example.com","123456");
         addCustomerPage=basePage.CustomerPage();
 
@@ -132,7 +132,7 @@ public class AddCustomerTest extends BaseTest {
     }
     @Test(priority = 6)
     public void AddCustomerAndContacts() throws InterruptedException {
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         basePage= loginPage.Login("admin@example.com","123456");
         addCustomerPage=basePage.CustomerPage();
 
@@ -160,7 +160,7 @@ public class AddCustomerTest extends BaseTest {
         AddCustomerPage.addCustomerAndContacts(contactFirstName,contactLastName,contactEmail,contactPW);
         AddCustomerPage.verifyAddCustomerSuccessfully(companyName);
         AddCustomerPage.verifyContactDetail(contactFirstName,contactLastName,contactEmail);
-        Common common = new Common(driver);
+      //  Common common = new Common(driver);
         Common.click(By.xpath("//li[contains(@class, 'customer_tab_profile')]"));
         AddCustomerPage.veriryCustomerDetail(companyName, VATNumber, phoneNumber, website, group,currency,language, address, city, state, zipCode);
     }

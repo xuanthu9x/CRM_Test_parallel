@@ -1,4 +1,5 @@
 package Pages;
+import driver.DriverFactory;
 import keywords.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,9 +10,6 @@ import org.testng.Assert;
 
 public class AddCustomerPage extends BasePage{
     public static By customerSummaryTitle = By.xpath("//span[normalize-space()='Customers Summary']");
-    public AddCustomerPage(WebDriver driver){
-        super(driver);
-    }
     public static By menuCustomer = By.xpath("//span[normalize-space()='Customers']");
     public static By btnNewCustomer = By.xpath("//div[@class='_buttons']/descendant::a[normalize-space()='New Customer']");
     private static By inputCompany = By.xpath("//input[@id='company']");
@@ -49,7 +47,7 @@ public class AddCustomerPage extends BasePage{
 
 
     public static void verifyAddCustomerSuccessfully(String companyName){
-        Boolean companyNameDisplay = driver.findElement(By.xpath("//span[contains(text(),'"+companyName+"')]")).isDisplayed();
+        Boolean companyNameDisplay = DriverFactory.getDriver().findElement(By.xpath("//span[contains(text(),'"+companyName+"')]")).isDisplayed();
         Assert.assertTrue(companyNameDisplay,"Add customer not successfully");
     }
 
@@ -62,7 +60,7 @@ public class AddCustomerPage extends BasePage{
     }*/
 
     public static void InputFullCustomerInfor(String companyName, String VAT, String sdt, String webSite, String group,String language, String address, String city, String state, String zipCode) throws InterruptedException {
-        Common common = new Common(driver);
+       // Common common = new Common(DriverFactory.getDriver());
         Common.click(btnNewCustomer);
         Common.sendKey(inputCompany,companyName);
         Common.sendKey(inputVAT,VAT);
@@ -72,10 +70,10 @@ public class AddCustomerPage extends BasePage{
         Common.sendKey(inputSearchGroup,group);
         Thread.sleep(1000);
         Common.click(By.xpath("//div[@id='bs-select-1']/descendant::span[contains(normalize-space(),'"+group+"')]"));
-        driver.findElement(By.xpath("//body")).click();
+        DriverFactory.getDriver().findElement(By.xpath("//body")).click();
 
-        Actions action = new Actions(driver);
-        action.moveToElement(driver.findElement(countryDropdown)).perform();
+        Actions action = new Actions(DriverFactory.getDriver());
+        action.moveToElement(DriverFactory.getDriver().findElement(countryDropdown)).perform();
 
         Common.click(currencyDropdown);
         Common.click(currencyOptionUSD);
@@ -90,32 +88,30 @@ public class AddCustomerPage extends BasePage{
     }
     public static void AddCustomerOnlySave()
     {
-        Common common = new Common(driver);
+       // Common common = new Common(driver);
         Common.moveToElement(btnOnlySave);
         Common.click(btnOnlySave);
     }
     public static void AddCustomerAndContact(){
-        Common common = new Common(driver);
+        //Common common = new Common(driver);
         Common.moveToElement(btnSaveAndCreateContract);
         Common.click(btnSaveAndCreateContract);
     }
     public static void verifyAddCustomerWithContact(String companyName){
-        Common common = new Common(driver);
-        Boolean newContactPopup = driver.findElement(By.xpath("//div[@id='contact']")).isDisplayed();
+
+        Boolean newContactPopup = DriverFactory.getDriver().findElement(By.xpath("//div[@id='contact']")).isDisplayed();
         Assert.assertTrue(newContactPopup,"Add new contact pop-up is not shown");
         Common.click(By.xpath("//button[normalize-space() = 'Close']"));
-        Boolean companyNameDisplay = driver.findElement(By.xpath("//span[contains(text(),'"+companyName+"')]")).isDisplayed();
+        Boolean companyNameDisplay = DriverFactory.getDriver().findElement(By.xpath("//span[contains(text(),'"+companyName+"')]")).isDisplayed();
         Assert.assertTrue(companyNameDisplay,"Add customer not successfully");
     }
     public static void verifyRequireFieldWarning(){
-        Common common = new Common(driver);
-        Boolean warningDisplay = driver.findElement(companyEmptyWarning).isDisplayed();
+        Boolean warningDisplay = DriverFactory.getDriver().findElement(companyEmptyWarning).isDisplayed();
         Assert.assertTrue(warningDisplay,"Validate company empty is not shown");
-        String warningMessage = driver.findElement(companyEmptyWarning).getText();
+        String warningMessage = DriverFactory.getDriver().findElement(companyEmptyWarning).getText();
         Common.softAssertEqual(warningMessage,"This field is required.");
     }
     public static void addCustomerAndContacts(String contactFirstName, String contactLastName, String email, String password) throws InterruptedException {
-        Common common = new Common(driver);
         Common.sendKey(firstNameContact,contactFirstName);
         Common.sendKey(lastNameContact,contactLastName);
         Common.sendKey(contactEmail,email);
@@ -123,14 +119,8 @@ public class AddCustomerPage extends BasePage{
         Common.click(contactSaveBtn);
         Thread.sleep(1000);
     }
-    /*public static void verifyAddedContact(String email)
-    {
-        String actualContactEmail = getText(By.xpath("//a[contains(@href,'mailto')]"));
-        Assert.assertEquals(actualContactEmail,email);
-    }*/
 
     public static void verifyAlertMessage(){
-        Common common = new Common(driver);
         boolean isDisplay = Common.isDisplay(alertMessage, 3000);
         System.out.println("Is alert message displayed: "+ isDisplay);
         Assert.assertTrue(isDisplay, "alert message is NOT display");
@@ -140,7 +130,6 @@ public class AddCustomerPage extends BasePage{
     }
 
     public static void veriryCustomerDetail(String companyName, String VAT, String sdt, String webSite,String group,String currency, String language,String address, String city, String state, String zipCode){
-        Common common = new Common(driver);
         String actualCompanyName = Common.getContribute(inputCompany,"value");
         Common.softAssertEqual(actualCompanyName,companyName);
 

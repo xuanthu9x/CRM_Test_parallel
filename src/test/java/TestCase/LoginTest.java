@@ -2,6 +2,7 @@ package TestCase;
 
 import Common.BaseTest;
 import Pages.LoginPage;
+import driver.DriverFactory;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -11,7 +12,7 @@ public class LoginTest extends BaseTest {
     @Parameters ({"email","password"})
     public void LoginSuccess(@Optional("admin@example.com") String email,@Optional("123456") String password) throws InterruptedException {
         System.out.println("Test case: Login with valid email and password");
-        LoginPage login = new LoginPage(driver);
+        LoginPage login = new LoginPage();
         LoginPage.LoginWithRememberMe(email, password);
         LoginPage.verifyLoginSuccess();
     }
@@ -19,7 +20,7 @@ public class LoginTest extends BaseTest {
     @Test (priority = 2)
     public void EmailEmpty(){
         System.out.println("Test case: Login with empty email");
-        LoginPage login = new LoginPage(driver);
+        LoginPage login = new LoginPage();
         LoginPage.LoginTest("", "123456");
         LoginPage.verifyEmailEmptyWarning();
 
@@ -28,14 +29,14 @@ public class LoginTest extends BaseTest {
     @Test(priority = 3)
     public void PasswordEmpty(){
         System.out.println("Test case: Login with empty password");
-        LoginPage login = new LoginPage(driver);
+        LoginPage login = new LoginPage();
         LoginPage.LoginTest("admin@example.com", "");
         LoginPage.verifyPasswordEmptyWarning();
     }
     @Test (priority = 4)
     public void EmailWrong(){
         System.out.println("Test case: Login with wrong email");
-        LoginPage login = new LoginPage(driver);
+        LoginPage login = new LoginPage();
         LoginPage.LoginTest("admin1@exmample.com","123456");
         LoginPage.verifyEmailWrong();
     }
@@ -43,14 +44,14 @@ public class LoginTest extends BaseTest {
     @Test (priority = 5)
     public void PassWrong(){
         System.out.println("Test case: Login with wrong password");
-        LoginPage login = new LoginPage(driver);
+        LoginPage login = new LoginPage();
         LoginPage.LoginTest("admin@example.com", "abcdef");
         LoginPage.verifyPasswordWrong();
     }
     @Test (priority = 6)
     public void emailFormatWrong(){
         System.out.println("Test case: Login with wrong email format");
-        LoginPage login = new LoginPage(driver);
+        LoginPage login = new LoginPage();
         LoginPage.LoginTest("abc", "123456");
         LoginPage.verifyEmailFormat();
     }

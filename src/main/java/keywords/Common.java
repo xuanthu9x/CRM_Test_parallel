@@ -1,5 +1,5 @@
 package keywords;
-
+import driver.DriverFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -8,15 +8,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.sql.DriverManager;
 import java.time.Duration;
 
 public class Common {
-    private static WebDriver driver;
+    //private static WebDriver driver;
     private static int TIMEOUT = 5;
-    public Common (WebDriver driver){
-        this.driver = driver;
-    }
     public static void openUrl(String url){
+        WebDriver driver = DriverFactory.getDriver();
         driver.get(url);
         System.out.println("Open URL: " + url);
         waitForPageLoaded();
@@ -30,7 +29,7 @@ public class Common {
 
     public static WebElement waitForElementVisible(By by) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
+            WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
             return  wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Throwable error) {
             logConsole("Timeout waiting for the element visible. " + by.toString());
@@ -40,7 +39,7 @@ public class Common {
 
     public static WebElement waitForElementVisible(By by, int timeoutInSeconds) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
+            WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
             return  wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Throwable error) {
             logConsole("Timeout waiting for the element visible. " + by.toString());
@@ -50,7 +49,7 @@ public class Common {
 
     public static WebElement waitForElementClickable(By by) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
+            WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(TIMEOUT), Duration.ofMillis(500));
             return wait.until(ExpectedConditions.elementToBeClickable(by));
         } catch (Throwable error) {
             logConsole("Timeout waiting for the element ready to click. " + by.toString());
@@ -59,7 +58,7 @@ public class Common {
     }
     public static void highLightElement(By by) {
         WebElement element = waitForElementVisible(by);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = (JavascriptExecutor) DriverFactory.getDriver();
         js.executeScript("arguments[0].style.border='3px solid red'", element);
     }
     public static void sendKey(By by, String message) {
@@ -77,7 +76,7 @@ public class Common {
     }
 
     public static void clearText(By by){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(5));
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         element.clear();
         System.out.println("Clear text in element: " + by.toString());
@@ -101,7 +100,7 @@ public class Common {
     }
     public static void moveToElement(By by){
         WebElement element = waitForElementVisible(by);
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(DriverFactory.getDriver());
         actions.moveToElement(element).perform();
         highLightElement(by);
         System.out.println("Move to element: " + by.toString());
@@ -109,7 +108,7 @@ public class Common {
 
     public static void hoverElement(By by){
         WebElement element = waitForElementVisible(by);
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(DriverFactory.getDriver());
         actions.moveToElement(element).perform();
         highLightElement(by);
         System.out.println("Hover on element: " + by.toString());
@@ -120,7 +119,7 @@ public class Common {
         WebElement targetElement = waitForElementVisible(toElement);
         highLightElement(fromElement);
         highLightElement(toElement);
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(DriverFactory.getDriver());
         actions.dragAndDrop(sourceElement, targetElement).perform();
         System.out.println("Drag element: " + fromElement.toString() + " and drop to element: " + toElement.toString());
     }
@@ -130,7 +129,7 @@ public class Common {
         WebElement targetElement = waitForElementVisible(toElement);
         highLightElement(fromElement);
         highLightElement(toElement);
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(DriverFactory.getDriver());
         actions.clickAndHold(sourceElement).moveToElement(targetElement).release().perform();
         System.out.println("Click and move element: " + fromElement.toString() + " to element: " + toElement.toString());
     }
@@ -154,8 +153,8 @@ public class Common {
 
     //Chờ đợi trang load xong mới thao tác
     public static void waitForPageLoaded() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30), Duration.ofMillis(500));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(30), Duration.ofMillis(500));
+        JavascriptExecutor js = (JavascriptExecutor) DriverFactory.getDriver();
 
         //Wait for Javascript to load
         ExpectedCondition< Boolean > jsLoad = new ExpectedCondition < Boolean > () {
