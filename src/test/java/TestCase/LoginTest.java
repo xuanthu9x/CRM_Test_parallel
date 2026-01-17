@@ -55,4 +55,21 @@ public class LoginTest extends BaseTest {
         LoginPage.LoginTest("abc", "123456");
         LoginPage.verifyEmailFormat();
     }
+
+
+
+    @Test (dataProvider = "data_provider_login", dataProviderClass = DataProviderFactory.class)
+    public void LoginSuccessDemoDataProvider(String email, String password) throws InterruptedException {
+        System.out.println("Test case: Login with data provider");
+        LoginPage login = new LoginPage();
+        LoginPage.LoginWithRememberMe(email, password);
+        LoginPage.verifyLoginSuccess();
+    }
+
+    @Test(dataProvider = "data_provider_login_excel", dataProviderClass = DataProviderFactory.class)
+    public void testLoginFromDataProviderExcel(String email, String password) {
+        LoginPage login = new LoginPage();
+        LoginPage.LoginWithRememberMe(email, password);
+        LoginPage.verifyLoginSuccess();
+    }
 }
